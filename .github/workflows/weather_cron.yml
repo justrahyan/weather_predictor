@@ -1,0 +1,30 @@
+name: Weather updater (cron)
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'   # setiap 6 jam (ubah sesuai kebutuhan)
+  workflow_dispatch:           # bisa manual trigger dari GitHub Actions UI
+
+jobs:
+  update-weather:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run update script
+        env:
+          OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
+          FIREBASE_DB_URL: ${{ secrets.FIREBASE_DB_URL }}
+          LOCATIONS: ${{ secrets.LOCATIONS }}   # contoh value: -5.1767,119.4286;-6.2088,106.8456
+        run: |
+          python scripts/update_weather.py
