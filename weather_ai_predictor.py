@@ -10,6 +10,8 @@ FIREBASE_URL = "https://siaga-banjir-b73a8-default-rtdb.asia-southeast1.firebase
 API_KEY = "bb2dd84ca2541574dac0faffefcb4e45"
 
 app = Flask(__name__)
+from flask_cors import CORS
+CORS(app)
 
 # ===============================
 # 🔹 Ambil Data Cuaca dari OpenWeatherMap
